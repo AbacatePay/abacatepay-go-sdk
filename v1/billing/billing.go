@@ -40,11 +40,7 @@ func (b *Billing) Create(
 	return &response, nil
 }
 
-func (b *Billing) ListAll(
-	ctx context.Context,
-	page int,
-	limit int,
-) (*ListBillingResponse, error) {
+func (b *Billing) ListAll(ctx context.Context) (*ListBillingResponse, error) {
 	var response ListBillingResponse
 
 	resp, err := b.HttpClient.Get(ctx, "/v1/billing/list")

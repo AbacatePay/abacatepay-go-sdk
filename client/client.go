@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/antunesgabriel/abacatepay-go-sdk/internal/pkg/fetch"
+	"github.com/antunesgabriel/abacatepay-go-sdk/v1/billing"
 )
 
 const Version = "v0.1.0"
@@ -13,6 +14,7 @@ const DefaultTimeout = 500 * time.Millisecond
 
 type Client struct {
 	httpClient *fetch.Fetch
+	Billing    *billing.Billing
 }
 
 type ClientConfig struct {
@@ -44,5 +46,6 @@ func New(config *ClientConfig) *Client {
 
 	return &Client{
 		httpClient: httpClient,
+		Billing:    billing.New(httpClient),
 	}
 }

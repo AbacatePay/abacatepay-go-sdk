@@ -132,7 +132,7 @@ func TestListAll(t *testing.T) {
 
 		ctx := context.Background()
 
-		response, err := b.ListAll(ctx, 0, 10)
+		response, err := b.ListAll(ctx)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, response.Billings)
