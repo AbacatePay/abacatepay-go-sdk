@@ -12,51 +12,57 @@ go get github.com/AbacatePay/abacatepay-go-sdk
 package main
 
 import (
-	"fmt"
-    "context"
-
-    "https://github.com/AbacatePay/abacatepay-go-sdk"
-	"https://github.com/AbacatePay/abacatepay-go-sdk/v1/client"
+	"context"
+	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
+	"log"
+	"time"
 )
 
 func main() {
-	c := client.New(&client.ClientConfig{
-		ApiKey: "your-api-key",
+	client, err := abacatepay.New(&abacatepay.ClientConfig{
+		ApiKey:  "abc_dev",
+		Timeout: 10 * time.Second,
 	})
+	if err != nil {
+		panic(err)
+	}
 
-    // List all billings
-    ctx := context.Background()
+	//create a new billing
+	body := &billing.CreateBillingBody{
+		Frequency:     billing.OneTime,
+		Methods:       []billing.Method{billing.PIX},
+		CompletionUrl: "https://example.com/completion",
+		ReturnUrl:     "https://example.com/return",
+		Products: []*billing.BillingProduct{
+			{
+				ExternalId:  "pix-1234",
+				Name:        "Example Product",
+				Description: "Example product description",
+				Quantity:    1,
+				Price:       100,
+			},
+		},
+		Customer: &billing.BillingCustomer{
+			Email: "test@example.com",
+		},
+	}
 
-    listResponse, err := c.Billing.ListAll(ctx)
-    if err != nil {
-        panic(err)
-    }
+	ctx := context.Background()
+	createResponse, err := client.Billing.Create(ctx, body)
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Println(listResponse)
+	log.Println(createResponse)
 
-    // Create a new Billing
-    body := &billing.CreateBillingBody{
-        Frequency:     abacatepay.OneTime,
-        Methods:       []abacatepay.Method{abacatepay.PIX},
-        CompletionUrl: "https://example.com/completion",
-        ReturnUrl:     "https://example.com/return",
-        Products: []*billing.BillingProduct{
-            {
-                ExternalId:  "pix-1234",
-                Name:        "Example Product",
-                Description: "Example product description",
-                Quantity:    1,
-                Price:       100,
-            },
-        },
-    }
+	// list all billings
+	billings, err := client.Billing.ListAll(ctx)
+	if err != nil {
+		panic(err)
+	}
 
-    createResponse, err := c.Billing.Create(ctx, body)
-    if err != nil {
-        panic(err)
-    }
-
-    fmt.Println(createResponse)
+	log.Println(billings.Data)
 }
 ```
 
