@@ -10,7 +10,7 @@ import (
 
 func main() {
 	client, err := abacatepay.New(&abacatepay.ClientConfig{
-		ApiKey:  "abc_dev_1234",
+		ApiKey:  "abc_dev",
 		Timeout: 10 * time.Second,
 	})
 	if err != nil {
@@ -44,8 +44,6 @@ func main() {
 	}
 
 	log.Println(createResponse)
-
-	return
 
 	// list all billings
 	billings, err := client.Billing.ListAll(ctx)

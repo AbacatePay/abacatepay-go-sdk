@@ -111,8 +111,6 @@ func ParseResponse(resp *http.Response, target interface{}) error {
 		return fmt.Errorf("error on reading response body: %v", err)
 	}
 
-	fmt.Println(string(body))
-
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return fmt.Errorf("error on request: status %d, body: %s", resp.StatusCode, string(body))
 	}

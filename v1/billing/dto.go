@@ -119,7 +119,6 @@ type BillingListItem struct {
 	UpdatedAt time.Time     `json:"updatedAt"`
 	Version   int           `json:"__v"`
 	URL       string        `json:"url"`
-	BillingID string        `json:"id"`
 	Products  []ProductItem `json:"products"`
 }
 

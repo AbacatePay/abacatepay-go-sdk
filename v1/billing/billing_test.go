@@ -71,7 +71,7 @@ func TestCreate(t *testing.T) {
 			assert.Equal(t, *body, bodyRef)
 
 			resp := billing.CreateBillingResponse{
-				Billing: billing.CreateBillingResponseItem{
+				Data: billing.CreateBillingResponseItem{
 					PublicID: "pix-1234",
 					Products: []billing.ProductItem{},
 				},
@@ -90,7 +90,7 @@ func TestCreate(t *testing.T) {
 		response, err := b.Create(ctx, body)
 
 		assert.NoError(t, err)
-		assert.NotNil(t, response.Billing)
+		assert.NotNil(t, response.Data)
 	})
 }
 
@@ -103,7 +103,7 @@ func TestListAll(t *testing.T) {
 			assert.Equal(t, "/v1/billing/list", r.URL.Path)
 
 			resp := billing.ListBillingResponse{
-				Billings: []billing.BillingListItem{
+				Data: []billing.BillingListItem{
 					{
 						ID:        "pix-1234",
 						Metadata:  billing.Metadata{},
@@ -117,7 +117,6 @@ func TestListAll(t *testing.T) {
 						UpdatedAt: time.Now(),
 						Version:   0,
 						URL:       "",
-						BillingID: "",
 						Products:  []billing.ProductItem{},
 					},
 				},
@@ -136,6 +135,6 @@ func TestListAll(t *testing.T) {
 		response, err := b.ListAll(ctx)
 
 		assert.NoError(t, err)
-		assert.NotNil(t, response.Billings)
+		assert.NotNil(t, response.Data)
 	})
 }
