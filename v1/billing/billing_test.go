@@ -10,9 +10,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/antunesgabriel/abacatepay-go-sdk"
-	"github.com/antunesgabriel/abacatepay-go-sdk/internal/pkg/fetch"
-	"github.com/antunesgabriel/abacatepay-go-sdk/v1/billing"
+	"github.com/AbacatePay/abacatepay-go-sdk/internal/pkg/fetch"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
 )
 
 func TestNew(t *testing.T) {
@@ -27,8 +26,8 @@ func TestCreate(t *testing.T) {
 		client := billing.New(nil)
 
 		body := &billing.CreateBillingBody{
-			Frequency:     abacatepay.OneTime,
-			Methods:       []abacatepay.Method{abacatepay.PIX},
+			Frequency:     billing.OneTime,
+			Methods:       []billing.Method{billing.PIX},
 			CompletionUrl: "https://example.com/completion",
 		}
 
@@ -42,8 +41,8 @@ func TestCreate(t *testing.T) {
 
 	t.Run("Should create new billing", func(t *testing.T) {
 		body := &billing.CreateBillingBody{
-			Frequency:     abacatepay.OneTime,
-			Methods:       []abacatepay.Method{abacatepay.PIX},
+			Frequency:     billing.OneTime,
+			Methods:       []billing.Method{billing.PIX},
 			CompletionUrl: "https://example.com/completion",
 			ReturnUrl:     "https://example.com/return",
 			Products: []*billing.BillingProduct{
@@ -81,7 +80,8 @@ func TestCreate(t *testing.T) {
 			json.NewEncoder(w).Encode(resp)
 		}))
 
-		client := fetch.New("test-key", server.URL, "1.0.0", 10)
+		client, err := fetch.New("test-key", server.URL, "1.0.0", 10*time.Second)
+		assert.NoError(t, err)
 
 		b := billing.New(client)
 
@@ -111,7 +111,7 @@ func TestListAll(t *testing.T) {
 						Amount:    0,
 						Status:    "",
 						DevMode:   false,
-						Methods:   []abacatepay.Method{},
+						Methods:   []billing.Method{},
 						Frequency: "",
 						CreatedAt: time.Now(),
 						UpdatedAt: time.Now(),
@@ -126,7 +126,8 @@ func TestListAll(t *testing.T) {
 			json.NewEncoder(w).Encode(resp)
 		}))
 
-		client := fetch.New("test-key", server.URL, "1.0.0", 10)
+		client, err := fetch.New("test-key", server.URL, "1.0.0", 10*time.Second)
+		assert.NoError(t, err)
 
 		b := billing.New(client)
 

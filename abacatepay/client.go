@@ -1,11 +1,12 @@
-package client
+package abacatepay
 
 import (
+	"errors"
 	"os"
 	"time"
 
-	"github.com/antunesgabriel/abacatepay-go-sdk/internal/pkg/fetch"
-	"github.com/antunesgabriel/abacatepay-go-sdk/v1/billing"
+	"github.com/AbacatePay/abacatepay-go-sdk/internal/pkg/fetch"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
 )
 
 const Version = "v0.1.0"
@@ -18,6 +19,7 @@ type Client struct {
 }
 
 type ClientConfig struct {
+	Url     string
 	ApiKey  string
 	Timeout time.Duration
 }
@@ -27,12 +29,19 @@ type RequestOptions struct {
 	Headers map[string]string
 }
 
-func New(config *ClientConfig) *Client {
+var (
+	ErrInvalidAPIKey = errors.New("invalid API key")
+)
+
+func New(config *ClientConfig) (*Client, error) {
 	if config == nil || config.ApiKey == "" {
-		panic("API key is required")
+		return nil, ErrInvalidAPIKey
 	}
 
 	apiUrl := os.Getenv("ABACATEPAY_API_URL")
+	if config.Url != "" {
+		apiUrl = config.Url
+	}
 	if apiUrl == "" {
 		apiUrl = "https://api.abacatepay.com"
 	}
@@ -42,10 +51,13 @@ func New(config *ClientConfig) *Client {
 		timeout = DefaultTimeout
 	}
 
-	httpClient := fetch.New(config.ApiKey, apiUrl, Version, timeout)
+	httpClient, err := fetch.New(config.ApiKey, apiUrl, Version, timeout)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Client{
 		httpClient: httpClient,
 		Billing:    billing.New(httpClient),
-	}
+	}, nil
 }

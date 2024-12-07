@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-go get github.com/antunesgabriel/abacatepay-go-sdk
+go get github.com/AbacatePay/abacatepay-go-sdk
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ import (
 	"fmt"
     "context"
 
-    "https://github.com/antunesgabriel/abacatepay-go-sdk"
-	"https://github.com/antunesgabriel/abacatepay-go-sdk/v1/client"
+    "https://github.com/AbacatePay/abacatepay-go-sdk"
+	"https://github.com/AbacatePay/abacatepay-go-sdk/v1/client"
 )
 
 func main() {

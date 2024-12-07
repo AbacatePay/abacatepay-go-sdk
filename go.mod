@@ -1,4 +1,4 @@
-module github.com/antunesgabriel/abacatepay-go-sdk
+module github.com/AbacatePay/abacatepay-go-sdk
 
 go 1.22.7
 

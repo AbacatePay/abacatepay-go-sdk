@@ -1,4 +1,4 @@
-package abacatepay
+package billing
 
 type Frequency string
 
