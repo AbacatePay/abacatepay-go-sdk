@@ -4,10 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"time"
+)
+
+var (
+	ErrInvalidAPIKey = errors.New("invalid API key")
+	ErrInvalidAPIUrl = errors.New("invalid API url")
 )
 
 type Fetch struct {
@@ -22,20 +28,21 @@ type RequestOptions struct {
 	Headers map[string]string
 }
 
-func New(apiKey, apiUrl, version string, timeout time.Duration) *Fetch {
+func New(apiKey, apiUrl, version string, timeout time.Duration) (*Fetch, error) {
 	if apiKey == "" {
-		panic("API key is required")
+		return nil, ErrInvalidAPIKey
 	}
 
 	if apiUrl == "" {
-		panic("API url is required")
+		return nil, ErrInvalidAPIUrl
 	}
 
 	return &Fetch{
 		apiKey:  apiKey,
 		apiUrl:  apiUrl,
 		version: version,
-	}
+		timeout: timeout,
+	}, nil
 }
 
 func (f *Fetch) Request(ctx context.Context, method, endpoint string, body interface{}, opts ...RequestOptions) (*http.Response, error) {
@@ -45,21 +52,21 @@ func (f *Fetch) Request(ctx context.Context, method, endpoint string, body inter
 	if body != nil {
 		jsonBody, err := json.Marshal(body)
 		if err != nil {
-			return nil, fmt.Errorf("erro ao serializar body: %v", err)
+			return nil, fmt.Errorf("error on serializing request body: %v", err)
 		}
 		reqBody = bytes.NewBuffer(jsonBody)
 	}
 
 	req, err := http.NewRequestWithContext(ctx, method, url, reqBody)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao criar request: %v", err)
+		return nil, fmt.Errorf("error on creating request: %v", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", f.apiKey))
 	req.Header.Set("User-Agent", fmt.Sprintf("AbacatePay-Go-SDK/%s", f.version))
 
-	var timeout time.Duration = f.timeout * time.Second
+	var timeout time.Duration = f.timeout
 
 	if len(opts) > 0 {
 		opt := opts[0]

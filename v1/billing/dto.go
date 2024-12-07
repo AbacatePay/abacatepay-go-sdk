@@ -4,18 +4,25 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
-
-	"github.com/antunesgabriel/abacatepay-go-sdk"
 )
 
 var validate *validator.Validate
 
 type CreateBillingBody struct {
-	Frequency     abacatepay.Frequency `json:"frequency"     validate:"required"`
-	Methods       []abacatepay.Method  `json:"methods"       validate:"required,dive"`
-	ReturnUrl     string               `json:"returnUrl"     validate:"required,url"`
-	CompletionUrl string               `json:"completionUrl" validate:"required,url"`
-	Products      []*BillingProduct    `json:"products"      validate:"required,dive"`
+	Frequency     Frequency         `json:"frequency"     validate:"required"`
+	Methods       []Method          `json:"methods"       validate:"required,dive"`
+	ReturnUrl     string            `json:"returnUrl"     validate:"required,url"`
+	CompletionUrl string            `json:"completionUrl" validate:"required,url"`
+	Products      []*BillingProduct `json:"products"      validate:"required,dive"`
+	CustomerId    string            `json:"customerId"`
+	Customer      *BillingCustomer  `json:"customer"`
+}
+
+type BillingCustomer struct {
+	Name      string `json:"name"`
+	Cellphone string `json:"cellphone"`
+	Email     string `json:"email" validate:"required"`
+	TaxID     string `json:"taxId"`
 }
 
 type BillingProduct struct {
@@ -27,8 +34,9 @@ type BillingProduct struct {
 }
 
 type ProductItem struct {
-	ProductID string `json:"productId"`
-	Quantity  int    `json:"quantity"`
+	ID         string `json:"id"`
+	ExternalID string `json:"externalId"`
+	Quantity   int    `json:"quantity"`
 }
 
 type CreateBillingResponseItem struct {
@@ -53,7 +61,8 @@ type CreateBillingResponseItem struct {
 }
 
 type CreateBillingResponse struct {
-	Billing CreateBillingResponseItem `json:"billing"`
+	Data  CreateBillingResponseItem `json:"data"`
+	Error string                    `json:"error"`
 }
 
 type Metadata struct {
@@ -83,15 +92,15 @@ type Customer struct {
 }
 
 type BillingListItem struct {
-	ID       string   `json:"_id"`
+	ID       string   `json:"id"`
 	Metadata Metadata `json:"metadata"`
 	Customer struct {
-		ID       string           `json:"_id"`
+		ID       string           `json:"id"`
 		Metadata CustomerMetadata `json:"metadata"`
 	} `json:"customer"`
 	CustomerId struct {
 		Metadata  CustomerMetadata `json:"metadata"`
-		ID        string           `json:"_id"`
+		ID        string           `json:"id"`
 		PublicID  string           `json:"publicId"`
 		AccountID string           `json:"accountId"`
 		StoreID   string           `json:"storeId"`
@@ -100,22 +109,22 @@ type BillingListItem struct {
 		UpdatedAt time.Time        `json:"updatedAt"`
 		Version   int              `json:"__v"`
 	} `json:"customerId"`
-	PublicID  string               `json:"publicId"`
-	Amount    int64                `json:"amount"`
-	Status    string               `json:"status"`
-	DevMode   bool                 `json:"devMode"`
-	Methods   []abacatepay.Method  `json:"methods"`
-	Frequency abacatepay.Frequency `json:"frequency"`
-	CreatedAt time.Time            `json:"createdAt"`
-	UpdatedAt time.Time            `json:"updatedAt"`
-	Version   int                  `json:"__v"`
-	URL       string               `json:"url"`
-	BillingID string               `json:"id"`
-	Products  []ProductItem        `json:"products"`
+	PublicID  string        `json:"publicId"`
+	Amount    int64         `json:"amount"`
+	Status    string        `json:"status"`
+	DevMode   bool          `json:"devMode"`
+	Methods   []Method      `json:"methods"`
+	Frequency Frequency     `json:"frequency"`
+	CreatedAt time.Time     `json:"createdAt"`
+	UpdatedAt time.Time     `json:"updatedAt"`
+	Version   int           `json:"__v"`
+	URL       string        `json:"url"`
+	Products  []ProductItem `json:"products"`
 }
 
 type ListBillingResponse struct {
-	Billings []BillingListItem `json:"billings"`
+	Data  []BillingListItem `json:"data"`
+	Error string            `json:"error"`
 }
 
 func init() {

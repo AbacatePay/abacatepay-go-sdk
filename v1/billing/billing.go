@@ -2,8 +2,9 @@ package billing
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/antunesgabriel/abacatepay-go-sdk/internal/pkg/fetch"
+	"github.com/AbacatePay/abacatepay-go-sdk/internal/pkg/fetch"
 )
 
 type Billing struct {
@@ -24,13 +25,16 @@ func (b *Billing) Create(
 		return nil, err
 	}
 
+	if body.CustomerId == "" && (body.Customer == nil || body.Customer.Email == "") {
+		return nil, fmt.Errorf("customerId or customer.email is required")
+	}
+
 	var response CreateBillingResponse
 
 	resp, err := b.HttpClient.Post(ctx, "/v1/billing/create", body)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
 	err = fetch.ParseResponse(resp, &response)
 	if err != nil {
@@ -47,7 +51,6 @@ func (b *Billing) ListAll(ctx context.Context) (*ListBillingResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
 	err = fetch.ParseResponse(resp, &response)
 	if err != nil {
