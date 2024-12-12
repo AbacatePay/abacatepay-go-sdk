@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 
 	"github.com/antunesgabriel/abacatepay-go-sdk"
+	"github.com/antunesgabriel/abacatepay-go-sdk/v1/customer"
 )
 
 var validate *validator.Validate
@@ -62,35 +63,15 @@ type Metadata struct {
 	CompletionURL string `json:"completionUrl"`
 }
 
-type CustomerMetadata struct {
-	Name      string `json:"name"`
-	Cellphone string `json:"cellphone"`
-	TaxID     string `json:"taxId"`
-	Email     string `json:"email"`
-}
-
-// Customer representa o cliente associado a uma cobrança.
-type Customer struct {
-	Metadata  CustomerMetadata `json:"metadata"`
-	ID        string           `json:"_id"`
-	PublicID  string           `json:"publicId"`
-	AccountID string           `json:"accountId"`
-	StoreID   string           `json:"storeId"`
-	DevMode   bool             `json:"devMode"`
-	CreatedAt time.Time        `json:"createdAt"`
-	UpdatedAt time.Time        `json:"updatedAt"`
-	Version   int              `json:"__v"`
-}
-
 type BillingListItem struct {
 	ID       string   `json:"_id"`
 	Metadata Metadata `json:"metadata"`
 	Customer struct {
 		ID       string           `json:"_id"`
-		Metadata CustomerMetadata `json:"metadata"`
+		Metadata customer.CustomerMetadata `json:"metadata"`
 	} `json:"customer"`
 	CustomerId struct {
-		Metadata  CustomerMetadata `json:"metadata"`
+		Metadata  customer.CustomerMetadata `json:"metadata"`
 		ID        string           `json:"_id"`
 		PublicID  string           `json:"publicId"`
 		AccountID string           `json:"accountId"`
