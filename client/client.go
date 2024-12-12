@@ -49,5 +49,6 @@ func New(config *ClientConfig) *Client {
 	return &Client{
 		httpClient: httpClient,
 		Billing:    billing.New(httpClient),
+		Customer:   customer.New(httpClient),
 	}
 }
