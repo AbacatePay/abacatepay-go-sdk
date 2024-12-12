@@ -118,4 +118,3 @@ func TestListAllCustomers(t *testing.T) {
 		assert.NotNil(t, response.Customers)
 	})
 }
-

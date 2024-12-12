@@ -17,7 +17,7 @@ func New(httpClient *fetch.Fetch) *CustomerClient {
 	}
 }
 
-func (b *CustomerClient) Create(
+func (c *CustomerClient) Create(
 	ctx context.Context,
 	body *CreateCustomerBody,
 ) (*CreateCustomerResponse, error) {
@@ -27,7 +27,7 @@ func (b *CustomerClient) Create(
 
 	var response CreateCustomerResponse
 
-	resp, err := b.HttpClient.Post(ctx, "/v1/customer/create", body)
+	resp, err := c.HttpClient.Post(ctx, "/v1/customer/create", body)
 	if err != nil {
 		return nil, err
 	}
@@ -41,10 +41,10 @@ func (b *CustomerClient) Create(
 	return &response, nil
 }
 
-func (b *CustomerClient) ListAll(ctx context.Context) (*ListCustomerResponse, error) {
+func (c *CustomerClient) ListAll(ctx context.Context) (*ListCustomerResponse, error) {
 	var response ListCustomerResponse
 
-	resp, err := b.HttpClient.Get(ctx, "/v1/customer/list")
+	resp, err := c.HttpClient.Get(ctx, "/v1/customer/list")
 	if err != nil {
 		return nil, err
 	}
