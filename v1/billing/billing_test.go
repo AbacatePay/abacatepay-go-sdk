@@ -10,9 +10,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/antunesgabriel/abacatepay-go-sdk"
-	"github.com/antunesgabriel/abacatepay-go-sdk/internal/pkg/fetch"
-	"github.com/antunesgabriel/abacatepay-go-sdk/v1/billing"
+	"github.com/AbacatePay/abacatepay-go-sdk/internal/pkg/fetch"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
 )
 
 func TestNew(t *testing.T) {
@@ -27,8 +26,8 @@ func TestCreate(t *testing.T) {
 		client := billing.New(nil)
 
 		body := &billing.CreateBillingBody{
-			Frequency:     abacatepay.OneTime,
-			Methods:       []abacatepay.Method{abacatepay.PIX},
+			Frequency:     billing.OneTime,
+			Methods:       []billing.Method{billing.PIX},
 			CompletionUrl: "https://example.com/completion",
 		}
 
@@ -42,8 +41,8 @@ func TestCreate(t *testing.T) {
 
 	t.Run("Should create new billing", func(t *testing.T) {
 		body := &billing.CreateBillingBody{
-			Frequency:     abacatepay.OneTime,
-			Methods:       []abacatepay.Method{abacatepay.PIX},
+			Frequency:     billing.OneTime,
+			Methods:       []billing.Method{billing.PIX},
 			CompletionUrl: "https://example.com/completion",
 			ReturnUrl:     "https://example.com/return",
 			Products: []*billing.BillingProduct{
@@ -72,7 +71,7 @@ func TestCreate(t *testing.T) {
 			assert.Equal(t, *body, bodyRef)
 
 			resp := billing.CreateBillingResponse{
-				Billing: billing.CreateBillingResponseItem{
+				Data: billing.CreateBillingResponseItem{
 					PublicID: "pix-1234",
 					Products: []billing.ProductItem{},
 				},
@@ -81,7 +80,8 @@ func TestCreate(t *testing.T) {
 			json.NewEncoder(w).Encode(resp)
 		}))
 
-		client := fetch.New("test-key", server.URL, "1.0.0", 10)
+		client, err := fetch.New("test-key", server.URL, "1.0.0", 10*time.Second)
+		assert.NoError(t, err)
 
 		b := billing.New(client)
 
@@ -90,7 +90,7 @@ func TestCreate(t *testing.T) {
 		response, err := b.Create(ctx, body)
 
 		assert.NoError(t, err)
-		assert.NotNil(t, response.Billing)
+		assert.NotNil(t, response.Data)
 	})
 }
 
@@ -103,7 +103,7 @@ func TestListAll(t *testing.T) {
 			assert.Equal(t, "/v1/billing/list", r.URL.Path)
 
 			resp := billing.ListBillingResponse{
-				Billings: []billing.BillingListItem{
+				Data: []billing.BillingListItem{
 					{
 						ID:        "pix-1234",
 						Metadata:  billing.Metadata{},
@@ -111,13 +111,12 @@ func TestListAll(t *testing.T) {
 						Amount:    0,
 						Status:    "",
 						DevMode:   false,
-						Methods:   []abacatepay.Method{},
+						Methods:   []billing.Method{},
 						Frequency: "",
 						CreatedAt: time.Now(),
 						UpdatedAt: time.Now(),
 						Version:   0,
 						URL:       "",
-						BillingID: "",
 						Products:  []billing.ProductItem{},
 					},
 				},
@@ -126,7 +125,8 @@ func TestListAll(t *testing.T) {
 			json.NewEncoder(w).Encode(resp)
 		}))
 
-		client := fetch.New("test-key", server.URL, "1.0.0", 10)
+		client, err := fetch.New("test-key", server.URL, "1.0.0", 10*time.Second)
+		assert.NoError(t, err)
 
 		b := billing.New(client)
 
@@ -135,6 +135,6 @@ func TestListAll(t *testing.T) {
 		response, err := b.ListAll(ctx)
 
 		assert.NoError(t, err)
-		assert.NotNil(t, response.Billings)
+		assert.NotNil(t, response.Data)
 	})
 }

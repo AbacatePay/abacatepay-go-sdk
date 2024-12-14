@@ -1,14 +1,3 @@
-# abacatepay-go-sdk
-
-## Installation
-
-```bash
-go get github.com/AbacatePay/abacatepay-go-sdk
-```
-
-## Usage
-
-```go
 package main
 
 import (
@@ -64,12 +53,3 @@ func main() {
 
 	log.Println(billings.Data)
 }
-```
-
-## Documentation
-
-[https://abacatepay.readme.io](https://abacatepay.readme.io)
-
-## License
-
-MIT
