@@ -42,6 +42,7 @@ func TestCreate(t *testing.T) {
 	t.Run("Should create new billing", func(t *testing.T) {
 		body := &billing.CreateBillingBody{
 			Frequency:     billing.OneTime,
+			CustomerId:    "cust_abc1234",
 			Methods:       []billing.Method{billing.PIX},
 			CompletionUrl: "https://example.com/completion",
 			ReturnUrl:     "https://example.com/return",
@@ -105,19 +106,22 @@ func TestListAll(t *testing.T) {
 			resp := billing.ListBillingResponse{
 				Data: []billing.BillingListItem{
 					{
-						ID:        "pix-1234",
-						Metadata:  billing.Metadata{},
-						PublicID:  "pix-1234",
-						Amount:    0,
-						Status:    "",
-						DevMode:   false,
-						Methods:   []billing.Method{},
-						Frequency: "",
-						CreatedAt: time.Now(),
-						UpdatedAt: time.Now(),
-						Version:   0,
-						URL:       "",
-						Products:  []billing.ProductItem{},
+						ID:           "pix-1234",
+						Metadata:     billing.Metadata{},
+						PublicID:     "pix-1234",
+						Amount:       0,
+						Status:       "",
+						DevMode:      false,
+						Methods:      []billing.Method{},
+						Frequency:    "",
+						CreatedAt:    time.Now(),
+						UpdatedAt:    time.Now(),
+						Version:      0,
+						URL:          "",
+						AllowCoupons: false,
+						Coupons:      []billing.Coupon{},
+						CouponsUsed:  []billing.CouponUsed{},
+						Products:     []billing.ProductItem{},
 					},
 				},
 			}

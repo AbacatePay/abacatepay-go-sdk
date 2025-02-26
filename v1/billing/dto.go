@@ -39,25 +39,28 @@ type ProductItem struct {
 	Quantity   int    `json:"quantity"`
 }
 
+// O client no response encapsula o metadado referente ao mesmo.
+type CustomerResponse struct {
+	CustomerMetadata `json:"metadata"`
+}
+
 type CreateBillingResponseItem struct {
-	PublicID  string        `json:"publicId"`
-	Products  []ProductItem `json:"products"`
-	Amount    int64         `json:"amount"`
-	Status    string        `json:"status"`
-	DevMode   bool          `json:"devMode"`
-	Methods   []string      `json:"methods"`
-	Frequency string        `json:"frequency"`
-	Metadata  struct {
-		Fee           int64  `json:"fee"`
-		ReturnURL     string `json:"returnUrl"`
-		CompletionURL string `json:"completionUrl"`
-	} `json:"metadata"`
-	CreatedAt string `json:"createdAt"`
-	UpdatedAt string `json:"updatedAt"`
-	ID        string `json:"_id"`
-	Version   int    `json:"__v"`
-	URL       string `json:"url"`
-	BillingID string `json:"id"`
+	PublicID     string           `json:"publicId"`
+	Products     []ProductItem    `json:"products"`
+	Amount       int64            `json:"amount"`
+	Status       string           `json:"status"`
+	DevMode      bool             `json:"devMode"`
+	Methods      []string         `json:"methods"`
+	Frequency    string           `json:"frequency"`
+	Customer     CustomerResponse `json:"customer"`
+	CreatedAt    string           `json:"createdAt"`
+	UpdatedAt    string           `json:"updatedAt"`
+	ID           string           `json:"_id"`
+	Version      int              `json:"__v"`
+	URL          string           `json:"url"`
+	BillingID    string           `json:"id"`
+	AllowCoupons bool             `json:"allowCoupons"`
+	CouponsUsed  []CouponUsed     `json:"couponsUsed"`
 }
 
 type CreateBillingResponse struct {
@@ -109,17 +112,20 @@ type BillingListItem struct {
 		UpdatedAt time.Time        `json:"updatedAt"`
 		Version   int              `json:"__v"`
 	} `json:"customerId"`
-	PublicID  string        `json:"publicId"`
-	Amount    int64         `json:"amount"`
-	Status    string        `json:"status"`
-	DevMode   bool          `json:"devMode"`
-	Methods   []Method      `json:"methods"`
-	Frequency Frequency     `json:"frequency"`
-	CreatedAt time.Time     `json:"createdAt"`
-	UpdatedAt time.Time     `json:"updatedAt"`
-	Version   int           `json:"__v"`
-	URL       string        `json:"url"`
-	Products  []ProductItem `json:"products"`
+	PublicID     string        `json:"publicId"`
+	Amount       int64         `json:"amount"`
+	Status       string        `json:"status"`
+	DevMode      bool          `json:"devMode"`
+	Methods      []Method      `json:"methods"`
+	Frequency    Frequency     `json:"frequency"`
+	CreatedAt    time.Time     `json:"createdAt"`
+	UpdatedAt    time.Time     `json:"updatedAt"`
+	Version      int           `json:"__v"`
+	URL          string        `json:"url"`
+	Products     []ProductItem `json:"products"`
+	CouponsUsed  []CouponUsed  `json:"couponsUsed"`
+	Coupons      []Coupon      `json:"coupons"`
+	AllowCoupons bool          `json:"allowCopuons"`
 }
 
 type ListBillingResponse struct {
