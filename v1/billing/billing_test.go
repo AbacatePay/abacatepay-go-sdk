@@ -54,6 +54,7 @@ func TestCreate(t *testing.T) {
 					Price:       100,
 				},
 			},
+			CustomerId: "customer-1234",
 		}
 
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
