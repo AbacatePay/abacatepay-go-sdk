@@ -1,8 +1,6 @@
 module github.com/AbacatePay/abacatepay-go-sdk
 
-go 1.23.0
-
-toolchain go1.24.4
+go 1.24.4
 
 require (
 	github.com/go-playground/validator/v10 v10.26.0
