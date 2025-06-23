@@ -19,8 +19,8 @@ type Client struct {
 }
 
 type ClientConfig struct {
-	Url     string
-	ApiKey  string
+	URL     string
+	APIKey  string
 	Timeout time.Duration
 }
 
@@ -34,16 +34,16 @@ var (
 )
 
 func New(config *ClientConfig) (*Client, error) {
-	if config == nil || config.ApiKey == "" {
+	if config == nil || config.APIKey == "" {
 		return nil, ErrInvalidAPIKey
 	}
 
-	apiUrl := os.Getenv("ABACATEPAY_API_URL")
-	if config.Url != "" {
-		apiUrl = config.Url
+	APIUrl := os.Getenv("ABACATEPAY_API_URL")
+	if config.URL != "" {
+		APIUrl = config.URL
 	}
-	if apiUrl == "" {
-		apiUrl = "https://api.abacatepay.com"
+	if APIUrl == "" {
+		APIUrl = "https://api.abacatepay.com"
 	}
 
 	timeout := config.Timeout
@@ -51,7 +51,7 @@ func New(config *ClientConfig) (*Client, error) {
 		timeout = DefaultTimeout
 	}
 
-	httpClient, err := fetch.New(config.ApiKey, apiUrl, Version, timeout)
+	httpClient, err := fetch.New(config.APIKey, APIUrl, Version, timeout)
 	if err != nil {
 		return nil, err
 	}

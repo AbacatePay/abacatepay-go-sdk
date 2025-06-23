@@ -11,10 +11,10 @@ var validate *validator.Validate
 type CreateBillingBody struct {
 	Frequency     Frequency         `json:"frequency"     validate:"required"`
 	Methods       []Method          `json:"methods"       validate:"required,dive"`
-	ReturnUrl     string            `json:"returnUrl"     validate:"required,url"`
-	CompletionUrl string            `json:"completionUrl" validate:"required,url"`
+	ReturnURL     string            `json:"returnUrl"     validate:"required,url"`
+	CompletionURL string            `json:"completionUrl" validate:"required,url"`
 	Products      []*BillingProduct `json:"products"      validate:"required,dive"`
-	CustomerId    string            `json:"customerId"`
+	CustomerID    string            `json:"customerId"`
 	Customer      *BillingCustomer  `json:"customer"`
 }
 
@@ -26,7 +26,7 @@ type BillingCustomer struct {
 }
 
 type BillingProduct struct {
-	ExternalId  string `json:"externalId"  validate:"required"`
+	ExternalID  string `json:"externalId"  validate:"required"`
 	Name        string `json:"name"        validate:"required"`
 	Description string `json:"description"`
 	Quantity    int    `json:"quantity"    validate:"required,gte=1"`
@@ -98,7 +98,7 @@ type BillingListItem struct {
 		ID       string           `json:"id"`
 		Metadata CustomerMetadata `json:"metadata"`
 	} `json:"customer"`
-	CustomerId struct {
+	CustomerID struct {
 		Metadata  CustomerMetadata `json:"metadata"`
 		ID        string           `json:"id"`
 		PublicID  string           `json:"publicId"`

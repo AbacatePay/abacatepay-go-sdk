@@ -28,7 +28,7 @@ func TestCreate(t *testing.T) {
 		body := &billing.CreateBillingBody{
 			Frequency:     billing.OneTime,
 			Methods:       []billing.Method{billing.PIX},
-			CompletionUrl: "https://example.com/completion",
+			CompletionURL: "https://example.com/completion",
 		}
 
 		ctx := context.Background()
@@ -43,11 +43,11 @@ func TestCreate(t *testing.T) {
 		body := &billing.CreateBillingBody{
 			Frequency:     billing.OneTime,
 			Methods:       []billing.Method{billing.PIX},
-			CompletionUrl: "https://example.com/completion",
-			ReturnUrl:     "https://example.com/return",
+			CompletionURL: "https://example.com/completion",
+			ReturnURL:     "https://example.com/return",
 			Products: []*billing.BillingProduct{
 				{
-					ExternalId:  "pix-1234",
+					ExternalID:  "pix-1234",
 					Name:        "PIX",
 					Description: "PIX",
 					Quantity:    1,

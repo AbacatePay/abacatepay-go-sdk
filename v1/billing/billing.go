@@ -8,12 +8,12 @@ import (
 )
 
 type Billing struct {
-	HttpClient *fetch.Fetch
+	HTTPClient *fetch.Fetch
 }
 
 func New(httpClient *fetch.Fetch) *Billing {
 	return &Billing{
-		HttpClient: httpClient,
+		HTTPClient: httpClient,
 	}
 }
 
@@ -25,13 +25,13 @@ func (b *Billing) Create(
 		return nil, err
 	}
 
-	if body.CustomerId == "" && (body.Customer == nil || body.Customer.Email == "") {
+	if body.CustomerID == "" && (body.Customer == nil || body.Customer.Email == "") {
 		return nil, fmt.Errorf("customerId or customer.email is required")
 	}
 
 	var response CreateBillingResponse
 
-	resp, err := b.HttpClient.Post(ctx, "/v1/billing/create", body)
+	resp, err := b.HTTPClient.Post(ctx, "/v1/billing/create", body)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (b *Billing) Create(
 func (b *Billing) ListAll(ctx context.Context) (*ListBillingResponse, error) {
 	var response ListBillingResponse
 
-	resp, err := b.HttpClient.Get(ctx, "/v1/billing/list")
+	resp, err := b.HTTPClient.Get(ctx, "/v1/billing/list")
 	if err != nil {
 		return nil, err
 	}

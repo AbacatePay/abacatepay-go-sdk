@@ -1,9 +1,10 @@
 package abacatepay_test
 
 import (
-	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
 	"testing"
 	"time"
+
+	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -11,7 +12,7 @@ import (
 func TestNew(t *testing.T) {
 	t.Run("Create new client with valid params", func(t *testing.T) {
 		cl, err := abacatepay.New(&abacatepay.ClientConfig{
-			ApiKey:  "test-key",
+			APIKey:  "test-key",
 			Timeout: 10 * time.Second,
 		})
 		assert.NoError(t, err)
@@ -20,7 +21,7 @@ func TestNew(t *testing.T) {
 
 	t.Run("Error if API key is empty", func(t *testing.T) {
 		cl, err := abacatepay.New(&abacatepay.ClientConfig{
-			ApiKey:  "",
+			APIKey:  "",
 			Timeout: 10 * time.Second,
 		})
 		assert.Error(t, err)

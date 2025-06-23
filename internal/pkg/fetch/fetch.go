@@ -18,7 +18,7 @@ var (
 
 type Fetch struct {
 	apiKey  string
-	apiUrl  string
+	apiURL  string
 	version string
 	timeout time.Duration
 }
@@ -28,25 +28,25 @@ type RequestOptions struct {
 	Headers map[string]string
 }
 
-func New(apiKey, apiUrl, version string, timeout time.Duration) (*Fetch, error) {
+func New(apiKey, apiURL, version string, timeout time.Duration) (*Fetch, error) {
 	if apiKey == "" {
 		return nil, ErrInvalidAPIKey
 	}
 
-	if apiUrl == "" {
+	if apiURL == "" {
 		return nil, ErrInvalidAPIUrl
 	}
 
 	return &Fetch{
 		apiKey:  apiKey,
-		apiUrl:  apiUrl,
+		apiURL:  apiURL,
 		version: version,
 		timeout: timeout,
 	}, nil
 }
 
 func (f *Fetch) Request(ctx context.Context, method, endpoint string, body interface{}, opts ...RequestOptions) (*http.Response, error) {
-	url := fmt.Sprintf("%s%s", f.apiUrl, endpoint)
+	url := fmt.Sprintf("%s%s", f.apiURL, endpoint)
 
 	var reqBody io.Reader
 	if body != nil {
@@ -66,7 +66,7 @@ func (f *Fetch) Request(ctx context.Context, method, endpoint string, body inter
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", f.apiKey))
 	req.Header.Set("User-Agent", fmt.Sprintf("AbacatePay-Go-SDK/%s", f.version))
 
-	var timeout time.Duration = f.timeout
+	var timeout = f.timeout
 
 	if len(opts) > 0 {
 		opt := opts[0]

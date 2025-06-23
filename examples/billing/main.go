@@ -2,15 +2,16 @@ package main
 
 import (
 	"context"
-	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
-	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
 	"log"
 	"time"
+
+	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
 )
 
 func main() {
 	client, err := abacatepay.New(&abacatepay.ClientConfig{
-		ApiKey:  "abc_dev",
+		APIKey:  "abc_dev",
 		Timeout: 10 * time.Second,
 	})
 	if err != nil {
@@ -21,11 +22,11 @@ func main() {
 	body := &billing.CreateBillingBody{
 		Frequency:     billing.OneTime,
 		Methods:       []billing.Method{billing.PIX},
-		CompletionUrl: "https://example.com/completion",
-		ReturnUrl:     "https://example.com/return",
+		CompletionURL: "https://example.com/completion",
+		ReturnURL:     "https://example.com/return",
 		Products: []*billing.BillingProduct{
 			{
-				ExternalId:  "pix-1234",
+				ExternalID:  "pix-1234",
 				Name:        "Example Product",
 				Description: "Example product description",
 				Quantity:    1,
