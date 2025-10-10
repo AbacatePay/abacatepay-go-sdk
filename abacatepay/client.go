@@ -7,6 +7,7 @@ import (
 
 	"github.com/AbacatePay/abacatepay-go-sdk/internal/pkg/fetch"
 	"github.com/AbacatePay/abacatepay-go-sdk/v1/billing"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/pixqrcode"
 )
 
 const Version = "v0.1.0"
@@ -16,6 +17,7 @@ const DefaultTimeout = 500 * time.Millisecond
 type Client struct {
 	httpClient *fetch.Fetch
 	Billing    *billing.Billing
+	PixQrCode  *pixqrcode.PixQrCode
 }
 
 type ClientConfig struct {
@@ -59,5 +61,6 @@ func New(config *ClientConfig) (*Client, error) {
 	return &Client{
 		httpClient: httpClient,
 		Billing:    billing.New(httpClient),
+		PixQrCode:  pixqrcode.New(httpClient),
 	}, nil
 }

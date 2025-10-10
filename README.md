@@ -66,9 +66,65 @@ func main() {
 }
 ```
 
+### PIX QR Code
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/AbacatePay/abacatepay-go-sdk/abacatepay"
+	"github.com/AbacatePay/abacatepay-go-sdk/v1/pixqrcode"
+	"github.com/shopspring/decimal"
+	"log"
+	"time"
+)
+
+func main() {
+	client, err := abacatepay.New(&abacatepay.ClientConfig{
+		ApiKey:  "abc_dev",
+		Timeout: 10 * time.Second,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// create a new PIX QR Code
+	body := &pixqrcode.CreatePixQrCode{
+		Amount:      decimal.NewFromInt(100), // Amount in cents (e.g., 100 = R$1.00)
+		ExpiresIn:   3600,                    // Expiration time in seconds
+		Description: "Example Pix QR Code",
+		Customer: pixqrcode.Customer{
+			Name:  "John Doe",
+			Email: "john.doe@example.com",
+			TaxId: "502.842.288-50",
+			Phone: "+5511999999999",
+		},
+	}
+
+	ctx := context.Background()
+	createResponse, err := client.PixQrCode.CreatePixQrCode(ctx, body)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println(createResponse)
+
+	// check PIX QR Code status
+	statusResponse, err := client.PixQrCode.CheckStatus(ctx, &pixqrcode.CheckStatus{
+		Id: createResponse.Data.Id,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println(statusResponse)
+}
+```
+
 ## Documentation
 
-[https://abacatepay.readme.io](https://abacatepay.readme.io)
+[https://docs.abacatepay.com/](https://docs.abacatepay.com/)
 
 ## License
 
